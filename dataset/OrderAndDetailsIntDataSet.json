@@ -1,29 +1,20 @@
 {
-	"name": "DestinationDataset_tva",
+	"name": "OrderAndDetailsIntDataSet",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "team17sr_adls",
 			"type": "LinkedServiceReference"
-		},
-		"parameters": {
-			"cw_fileName": {
-				"type": "String"
-			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "@dataset().cw_fileName",
-					"type": "Expression"
-				},
-				"folderPath": "CloudSales",
-				"fileSystem": "rawlanding"
+				"fileSystem": "conformeddatacontainer"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
+			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": []

@@ -1,0 +1,45 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Orders",
+						"type": "DatasetReference"
+					},
+					"name": "Orders"
+				},
+				{
+					"dataset": {
+						"referenceName": "OrderDetails",
+						"type": "DatasetReference"
+					},
+					"name": "OrderDetails"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "OrderAndDetailsIntDataSet",
+						"type": "DatasetReference"
+					},
+					"name": "OrderAndDetails"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumnOrders"
+				},
+				{
+					"name": "DerivedColumnOrderDetails"
+				},
+				{
+					"name": "JoinOrderAndDetails"
+				}
+			],
+			"script": "source(output(\n\t\tOrderID as string,\n\t\tCustomerID as string,\n\t\tOrderDate as string,\n\t\tShipDate as string,\n\t\tTotalCost as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Orders\nsource(output(\n\t\tOrderDetailID as string,\n\t\tOrderID as string,\n\t\tMovieID as string,\n\t\tQuantity as string,\n\t\tUnitCost as string,\n\t\tLineNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> OrderDetails\nOrders derive(OrderID = OrderID,\n\t\tCustomerID = CustomerID,\n\t\tOrderDate = OrderDate,\n\t\tShipDate = ShipDate,\n\t\tTotalCost = TotalCost,\n\t\tOrderCreatedDate = CreatedDate,\n\t\tOrderUpdatedDate = UpdatedDate,\n\t\tSourceOfRecord = toString('CloudSales')) ~> DerivedColumnOrders\nOrderDetails derive(OrderDetailID = OrderDetailID,\n\t\tOrderID = OrderID,\n\t\tMovieID = MovieID,\n\t\tQuantity = Quantity,\n\t\tUnitCost = UnitCost,\n\t\tLineNumber = LineNumber,\n\t\tOrderDetailsCreatedDate = CreatedDate,\n\t\tOrderDetailsUpdatedDate = UpdatedDate,\n\t\tSourceOfRecords = toString('CloudSales')) ~> DerivedColumnOrderDetails\nDerivedColumnOrders, DerivedColumnOrderDetails join(DerivedColumnOrders@OrderID == DerivedColumnOrderDetails@OrderID,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> JoinOrderAndDetails\nJoinOrderAndDetails sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> OrderAndDetails"
+		}
+	}
+}
