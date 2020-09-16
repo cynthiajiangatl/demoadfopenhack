@@ -1,0 +1,54 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "team17adf"
+		},
+		"FileServer_FourthCoffee_password": {
+			"value": ""
+		},
+		"SqlServerVanArsdel_connectionString": {
+			"value": ""
+		},
+		"Staging_Storage_connectionString": {
+			"value": ""
+		},
+		"team17ASQLCloudSalesDB_connectionString": {
+			"value": ""
+		},
+		"team17ASQLCloudStreamingDB_connectionString": {
+			"value": ""
+		},
+		"team17CosmoDBMovieCollection_connectionString": {
+			"value": ""
+		},
+		"team17FourthCoffeeFileShare_password": {
+			"value": ""
+		},
+		"team17sr_adls_accountKey": {
+			"value": ""
+		},
+		"FileServer_FourthCoffee_properties_typeProperties_host": {
+			"value": "C:\\"
+		},
+		"FileServer_FourthCoffee_properties_typeProperties_userId": {
+			"value": "southridge"
+		},
+		"team17FourthCoffeeFileShare_properties_typeProperties_host": {
+			"value": "\\\\40.83.249.208\\"
+		},
+		"team17FourthCoffeeFileShare_properties_typeProperties_userId": {
+			"value": "southridge"
+		},
+		"team17sr_adls_properties_typeProperties_url": {
+			"value": "https://team17srcloudstorage.dfs.core.windows.net"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

@@ -1,0 +1,153 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "team17adf"
+		},
+		"FileServer_FourthCoffee_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FileServer_FourthCoffee'"
+		},
+		"SqlServerVanArsdel_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerVanArsdel'"
+		},
+		"Staging_Storage_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Staging_Storage'"
+		},
+		"team17ASQLCloudSalesDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'team17ASQLCloudSalesDB'"
+		},
+		"team17ASQLCloudStreamingDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'team17ASQLCloudStreamingDB'"
+		},
+		"team17CosmoDBMovieCollection_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'team17CosmoDBMovieCollection'"
+		},
+		"team17FourthCoffeeFileShare_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'team17FourthCoffeeFileShare'"
+		},
+		"team17sr_adls_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'team17sr_adls'"
+		},
+		"FileServer_FourthCoffee_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\"
+		},
+		"FileServer_FourthCoffee_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "southridge"
+		},
+		"team17FourthCoffeeFileShare_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\40.83.249.208\\"
+		},
+		"team17FourthCoffeeFileShare_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "southridge"
+		},
+		"team17sr_adls_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://team17srcloudstorage.dfs.core.windows.net"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "team17adf_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"Staging_Storage_connectionString": {
+						"value": "[parameters('Staging_Storage_connectionString')]"
+					},
+					"team17ASQLCloudSalesDB_connectionString": {
+						"value": "[parameters('team17ASQLCloudSalesDB_connectionString')]"
+					},
+					"team17ASQLCloudStreamingDB_connectionString": {
+						"value": "[parameters('team17ASQLCloudStreamingDB_connectionString')]"
+					},
+					"team17CosmoDBMovieCollection_connectionString": {
+						"value": "[parameters('team17CosmoDBMovieCollection_connectionString')]"
+					},
+					"team17FourthCoffeeFileShare_password": {
+						"value": "[parameters('team17FourthCoffeeFileShare_password')]"
+					},
+					"team17sr_adls_accountKey": {
+						"value": "[parameters('team17sr_adls_accountKey')]"
+					},
+					"team17FourthCoffeeFileShare_properties_typeProperties_host": {
+						"value": "[parameters('team17FourthCoffeeFileShare_properties_typeProperties_host')]"
+					},
+					"team17FourthCoffeeFileShare_properties_typeProperties_userId": {
+						"value": "[parameters('team17FourthCoffeeFileShare_properties_typeProperties_userId')]"
+					},
+					"team17sr_adls_properties_typeProperties_url": {
+						"value": "[parameters('team17sr_adls_properties_typeProperties_url')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "team17adf_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"FileServer_FourthCoffee_password": {
+						"value": "[parameters('FileServer_FourthCoffee_password')]"
+					},
+					"SqlServerVanArsdel_connectionString": {
+						"value": "[parameters('SqlServerVanArsdel_connectionString')]"
+					},
+					"FileServer_FourthCoffee_properties_typeProperties_host": {
+						"value": "[parameters('FileServer_FourthCoffee_properties_typeProperties_host')]"
+					},
+					"FileServer_FourthCoffee_properties_typeProperties_userId": {
+						"value": "[parameters('FileServer_FourthCoffee_properties_typeProperties_userId')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'team17adf_ArmTemplate_0')]"
+			]
+		}
+	]
+}
