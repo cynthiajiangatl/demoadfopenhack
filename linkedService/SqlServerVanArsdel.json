@@ -1,0 +1,16 @@
+{
+	"name": "SqlServerVanArsdel",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=OHDataOnPremSQL;initial catalog=OnPremRentals;user id=southridge",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI0ZmE1YmRlZC04MmExLTRiNjctODM4MS00NmE0NjRiYzM0NjYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "SelfHostedIntegrationVanArsdale",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

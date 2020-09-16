@@ -1,0 +1,32 @@
+{
+	"name": "DestinationDataset_xft",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "team17sr_adls",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"cw_fileName": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().cw_fileName",
+					"type": "Expression"
+				},
+				"folderPath": "CloudStreaming",
+				"fileSystem": "rawlanding"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

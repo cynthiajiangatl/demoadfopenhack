@@ -1,0 +1,6 @@
+{
+	"name": "SelfHostedIntegrationVanArsdale",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
