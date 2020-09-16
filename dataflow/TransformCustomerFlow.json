@@ -33,7 +33,36 @@
 					"name": "VanArsdelCustomers"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DestinationDataset_hvv",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "OrderDetails",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				},
+				{
+					"dataset": {
+						"referenceName": "FourthCoffeeCustomers",
+						"type": "DatasetReference"
+					},
+					"name": "sink3"
+				},
+				{
+					"dataset": {
+						"referenceName": "VanArsdelCustomers",
+						"type": "DatasetReference"
+					},
+					"name": "sink4"
+				}
+			],
 			"transformations": [
 				{
 					"name": "DerivedColumn1"
@@ -45,7 +74,7 @@
 					"name": "DerivedColumn3"
 				}
 			],
-			"script": "source(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> SouthridgeCustomers\nsource(output(\n\t\tAddressID as string,\n\t\tCustomerID as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> SouthridgeAddresses\nsource(output(\n\t\t{B09477DC-5DCD-412A-AC13-01606E390264} as string,\n\t\tKolos as string,\n\t\tOrsos as string,\n\t\t{268 Tenth Ave} as string,\n\t\tNULL as string,\n\t\tWashington as string,\n\t\tDC as string,\n\t\t{21001} as string,\n\t\t{5555550561} as string,\n\t\t{2017-01-01} as string,\n\t\t{2017-07-16} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> FourthCoffeeCustomers\nsource(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> VanArsdelCustomers\nSouthridgeCustomers derive(SourceSystemID = toString('CloudSales'),\n\t\tSourceSystemCustomerID = CustomerID) ~> DerivedColumn1\nSouthridgeAddresses derive(SourceSystemID = toString('CloudSales'),\n\t\tSourceSystemCustomerID = CustomerID) ~> DerivedColumn2\nFourthCoffeeCustomers derive(column1 = ERROR_FUNCTION('')) ~> DerivedColumn3"
+			"script": "source(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> SouthridgeCustomers\nsource(output(\n\t\tAddressID as string,\n\t\tCustomerID as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> SouthridgeAddresses\nsource(output(\n\t\t{B09477DC-5DCD-412A-AC13-01606E390264} as string,\n\t\tKolos as string,\n\t\tOrsos as string,\n\t\t{268 Tenth Ave} as string,\n\t\tNULL as string,\n\t\tWashington as string,\n\t\tDC as string,\n\t\t{21001} as string,\n\t\t{5555550561} as string,\n\t\t{2017-01-01} as string,\n\t\t{2017-07-16} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> FourthCoffeeCustomers\nsource(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> VanArsdelCustomers\nSouthridgeCustomers derive(SourceSystemID = toString('CloudSales'),\n\t\tSourceSystemCustomerID = CustomerID) ~> DerivedColumn1\nSouthridgeAddresses derive(SourceSystemID = toString('CloudSales'),\n\t\tSourceSystemCustomerID = CustomerID) ~> DerivedColumn2\nFourthCoffeeCustomers derive(column1 = ERROR_FUNCTION('')) ~> DerivedColumn3\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1\nDerivedColumn2 sink(input(\n\t\tOrderDetailID as string,\n\t\tOrderID as string,\n\t\tMovieID as string,\n\t\tQuantity as string,\n\t\tUnitCost as string,\n\t\tLineNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink2\nDerivedColumn3 sink(input(\n\t\t{B09477DC-5DCD-412A-AC13-01606E390264} as string,\n\t\tKolos as string,\n\t\tOrsos as string,\n\t\t{268 Tenth Ave} as string,\n\t\tNULL as string,\n\t\tWashington as string,\n\t\tDC as string,\n\t\t{21001} as string,\n\t\t{5555550561} as string,\n\t\t{2017-01-01} as string,\n\t\t{2017-07-16} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink3\nVanArsdelCustomers sink(input(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink4"
 		}
 	}
 }
