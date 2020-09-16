@@ -19,52 +19,7 @@
 			"firstRowAsHeader": false,
 			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"name": "B09477DC-5DCD-412A-AC13-01606E390264",
-				"type": "String"
-			},
-			{
-				"name": "Kolos",
-				"type": "String"
-			},
-			{
-				"name": "Orsos",
-				"type": "String"
-			},
-			{
-				"name": "268 Tenth Ave",
-				"type": "String"
-			},
-			{
-				"name": "NULL",
-				"type": "String"
-			},
-			{
-				"name": "Washington",
-				"type": "String"
-			},
-			{
-				"name": "DC",
-				"type": "String"
-			},
-			{
-				"name": "21001",
-				"type": "String"
-			},
-			{
-				"name": "5555550561",
-				"type": "String"
-			},
-			{
-				"name": "2017-01-01",
-				"type": "String"
-			},
-			{
-				"name": "2017-07-16",
-				"type": "String"
-			}
-		]
+		"schema": []
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }
