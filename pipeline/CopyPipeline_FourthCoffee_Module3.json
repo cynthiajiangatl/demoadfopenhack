@@ -32,8 +32,7 @@
 							"wildcardFileName": "*"
 						},
 						"formatSettings": {
-							"type": "DelimitedTextReadSettings",
-							"skipLineCount": 0
+							"type": "DelimitedTextReadSettings"
 						}
 					},
 					"sink": {
