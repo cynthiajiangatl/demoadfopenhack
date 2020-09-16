@@ -29,6 +29,33 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_xft')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "team17ASQLCloudStreamingDB",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_table": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": {
+						"value": "@dataset().cw_table",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SouthridgeAddresses')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -369,7 +396,9 @@
 				"annotations": [],
 				"lastPublishTime": "2020-09-15T21:27:06Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SourceDataset_xft')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/V2CloudSales_Copy')]",
@@ -780,47 +809,26 @@
 						},
 						{
 							"dataset": {
-								"referenceName": "FourthCoffeeCustomers",
-								"type": "DatasetReference"
-							},
-							"name": "FourthCoffeeCustomers"
-						},
-						{
-							"dataset": {
 								"referenceName": "VanArsdelCustomers",
 								"type": "DatasetReference"
 							},
 							"name": "VanArsdelCustomers"
+						},
+						{
+							"dataset": {
+								"referenceName": "FourthCoffeeCustomers",
+								"type": "DatasetReference"
+							},
+							"name": "FourthCoffeeCustomers"
 						}
 					],
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "DestinationDataset_hvv",
+								"referenceName": "DestinationCustomers",
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
-						},
-						{
-							"dataset": {
-								"referenceName": "DestinationDataset_hvv",
-								"type": "DatasetReference"
-							},
-							"name": "sink2"
-						},
-						{
-							"dataset": {
-								"referenceName": "DestinationDataset_hvv",
-								"type": "DatasetReference"
-							},
-							"name": "sink3"
-						},
-						{
-							"dataset": {
-								"referenceName": "DestinationDataset_hvv",
-								"type": "DatasetReference"
-							},
-							"name": "sink4"
 						}
 					],
 					"transformations": [
@@ -828,16 +836,31 @@
 							"name": "DerivedColumn1"
 						},
 						{
-							"name": "DerivedColumn2"
-						},
-						{
-							"name": "DerivedColumn3"
-						},
-						{
 							"name": "DerivedColumn4"
+						},
+						{
+							"name": "DerivedColumn6"
+						},
+						{
+							"name": "Join1"
+						},
+						{
+							"name": "Union1"
+						},
+						{
+							"name": "Select1"
+						},
+						{
+							"name": "Select2"
+						},
+						{
+							"name": "Select3"
+						},
+						{
+							"name": "Select4"
 						}
 					],
-					"script": "source(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> SouthridgeCustomers\nsource(output(\n\t\tAddressID as string,\n\t\tCustomerID as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> SouthridgeAddresses\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> FourthCoffeeCustomers\nsource(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> VanArsdelCustomers\nSouthridgeCustomers derive(SourceSystemID = toString('CloudSales'),\n\t\tSourceSystemCustomerID = CustomerID) ~> DerivedColumn1\nSouthridgeAddresses derive(SourceSystemID = toString('CloudSales'),\n\t\tSourceSystemCustomerID = CustomerID) ~> DerivedColumn2\nFourthCoffeeCustomers derive(SourceSystemID = toString('FourthCoffee')) ~> DerivedColumn3\nVanArsdelCustomers derive(SourceSystemID = toString('VanArsdel'),\n\t\tSourceSystemCustomerID = CustomerID) ~> DerivedColumn4\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1\nDerivedColumn2 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink2\nDerivedColumn3 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink3\nDerivedColumn4 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink4"
+					"script": "source(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> SouthridgeCustomers\nsource(output(\n\t\tAddressID as string,\n\t\tCustomerID as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> SouthridgeAddresses\nsource(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> VanArsdelCustomers\nsource(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> FourthCoffeeCustomers\nSouthridgeCustomers derive(SourceSystemID = toString('CloudSales'),\n\t\tSourceSystemCustomerID = CustomerID) ~> DerivedColumn1\nVanArsdelCustomers derive(SourceSystemID = toString('VanArsdel'),\n\t\tSourceSystemCustomerID = CustomerID) ~> DerivedColumn4\nFourthCoffeeCustomers derive(SourceSystemID = toString('FourthCoffee'),\n\t\tSourceSystemCustomerID = CustomerID) ~> DerivedColumn6\nDerivedColumn1, Select1 join(SouthridgeCustomers@CustomerID == Select1@CustomerID,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join1\nSelect2, Select3, Select4 union(byName: true)~> Union1\nSouthridgeAddresses select(mapColumn(\n\t\tCustomerID,\n\t\tAddressLine1,\n\t\tAddressLine2,\n\t\tCity,\n\t\tState,\n\t\tZipCode\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nJoin1 select(mapColumn(\n\t\tCustomerID = SouthridgeCustomers@CustomerID,\n\t\tLastName,\n\t\tFirstName,\n\t\tPhoneNumber,\n\t\tCreatedDate,\n\t\tUpdatedDate,\n\t\tSourceSystemID,\n\t\tSourceSystemCustomerID,\n\t\tCustomerID = Select1@CustomerID,\n\t\tAddressLine1,\n\t\tAddressLine2,\n\t\tCity,\n\t\tState,\n\t\tZipCode\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select2\nDerivedColumn4 select(mapColumn(\n\t\tCustomerID,\n\t\tLastName,\n\t\tFirstName,\n\t\tAddressLine1,\n\t\tAddressLine2,\n\t\tCity,\n\t\tState,\n\t\tZipCode,\n\t\tPhoneNumber,\n\t\tCreatedDate,\n\t\tUpdatedDate,\n\t\tSourceSystemID,\n\t\tSourceSystemCustomerID\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select3\nDerivedColumn6 select(mapColumn(\n\t\tCustomerID,\n\t\tLastName,\n\t\tFirstName,\n\t\tAddressLine1,\n\t\tAddressLine2,\n\t\tCity,\n\t\tState,\n\t\tZipCode,\n\t\tPhoneNumber,\n\t\tCreatedDate,\n\t\tUpdatedDate,\n\t\tSourceSystemID,\n\t\tSourceSystemCustomerID\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select4\nUnion1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 				}
 			},
 			"dependsOn": [
@@ -1145,12 +1168,9 @@
 								"datasetParameters": {
 									"SouthridgeCustomers": {},
 									"SouthridgeAddresses": {},
-									"FourthCoffeeCustomers": {},
 									"VanArsdelCustomers": {},
-									"sink1": {},
-									"sink2": {},
-									"sink3": {},
-									"sink4": {}
+									"FourthCoffeeCustomers": {},
+									"sink1": {}
 								}
 							},
 							"staging": {},
