@@ -1,0 +1,16 @@
+{
+	"name": "DestinationDataset_ug8",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSynapseAnalyticsTest",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "COLETEST",
+			"table": "Azure Data Lake Storage Gen2 file"
+		}
+	}
+}
