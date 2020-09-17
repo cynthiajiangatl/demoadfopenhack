@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "team17adf"
 		},
+		"AzureSynapseAnalyticsTest_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSynapseAnalyticsTest'"
+		},
 		"FileServer_FourthCoffee_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'FileServer_FourthCoffee'"
@@ -86,6 +90,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"AzureSynapseAnalyticsTest_connectionString": {
+						"value": "[parameters('AzureSynapseAnalyticsTest_connectionString')]"
+					},
 					"Staging_Storage_connectionString": {
 						"value": "[parameters('Staging_Storage_connectionString')]"
 					},
@@ -147,6 +154,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'team17adf_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "team17adf_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'team17adf_ArmTemplate_1')]"
 			]
 		}
 	]

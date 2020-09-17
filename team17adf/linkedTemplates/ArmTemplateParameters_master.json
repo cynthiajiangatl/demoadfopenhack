@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "team17adf"
 		},
+		"AzureSynapseAnalyticsTest_connectionString": {
+			"value": ""
+		},
 		"FileServer_FourthCoffee_password": {
 			"value": ""
 		},
